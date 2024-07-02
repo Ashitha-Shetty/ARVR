@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <title>A-Frame Scene</title>
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Function to handle success in getting location
+
+        function showCube(position) {
+          var currentLatitude = position.coords.latitude;
+
+          var currentLongitude = position.coords.longitude;
+
+          console.log("Latitude: " + currentLatitude);
+          console.log("Longitude: " + currentLongitude);
+
+          // Make the cube visible by setting its 'visible' attribute to true
+
+          const targetLatitude = 12.9990656;
+
+          const targetLongitude = 77.6994816;
+
+          const threshold = 0.1;
+
+          var cube = document.querySelector("#locationCube");
+
+          if (
+            Math.abs(currentLatitude - targetLatitude) < threshold && Math.abs(currentLongitude - targetLongitude) < threshold) {
+            cube.setAttribute("visible", true);
+          }
+        }
+
+        // Function to handle error in getting location
+
+        function locationError(error) {
+          console.error("Error getting location: ", error);
+        }
+
+        // Get current position
+
+        navigator.geolocation.getCurrentPosition(showCube, locationError);
+      });
+    </script>
+  </head>
+
+  <body>
+    <a-scene>
+      <a-box
+        id="locationCube"
+        position="0 0.5-2"
+        rotation="0 45 0"
+        color="#4CC3D9"
+        visible="false"
+      ></a-box>
+
+      <a-camera gps-camera rotation-reader></a-camera>
+    </a-scene>
+  </body>
+</html>
